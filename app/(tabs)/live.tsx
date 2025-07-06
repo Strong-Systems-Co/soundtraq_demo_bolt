@@ -159,6 +159,8 @@ export default function Live() {
   const fetchStations = async () => {
     try {
       setLoading(true);
+      // Clear any previously loaded songs when fetching stations
+      setSongs([]);
       const response = await api.get('/locations');
       console.log('Stations API Response:', response.data);
       setStations(response.data);
@@ -185,6 +187,10 @@ export default function Live() {
     
     try {
       setLoadingSongs(true);
+      // Clear any existing songs first
+      setSongs([]);
+      // Clear existing songs before fetching new ones
+      setSongs([]);
       startRotationAnimation();
       
       const response = await api.get(`/playToday/${stationId}`);
@@ -217,28 +223,24 @@ export default function Live() {
   }, [isRefreshing]);
 
   useEffect(() => {
+    // Clear songs on component mount
+    setSongs([]);
     fetchStations();
   }, []);
 
-  useEffect(() => {
     if (selectedStation?.id) {
-      if (refreshInterval.current) {
-        clearInterval(refreshInterval.current);
-      }
+      // Clear songs when station changes
+      setSongs([]);
       fetchSongs(selectedStation.id);
     }
-
-    return () => {
-      if (refreshInterval.current) {
-        clearInterval(refreshInterval.current);
-      }
-    };
   }, [selectedStation, fetchSongs]);
 
   const handleStationChange = (station: Station) => {
     setSelectedStation(station);
     setShowStationPicker(false);
     setIsRefreshing(true);
+    // Clear songs when changing stations
+    setSongs([]);
     setLastUpdate(new Date());
     fetchSongs(station.id);
   };
@@ -246,6 +248,8 @@ export default function Live() {
   const handleManualRefresh = () => {
     if (selectedStation?.id && !loadingSongs) {
       setIsRefreshing(true);
+      // Clear songs before refreshing
+      setSongs([]);
       fetchSongs(selectedStation.id);
     }
   };

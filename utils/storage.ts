@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEYS = {
   PLAYING_TODAY: 'playing_today_data',
+  LIVE_SONGS: 'live_songs_data',
+  TOP_100_SONGS: 'top_100_songs_data',
   LAST_UPDATE: 'playing_today_last_update',
 } as const;
 

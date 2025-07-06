@@ -3,6 +3,7 @@ import { Radio, Clock, RefreshCw } from 'lucide-react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '@/constants/api';
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Song {
   id: number;
@@ -38,6 +39,8 @@ export default function Top100() {
   const fetchSongs = useCallback(async () => {
     try {
       setLoading(true);
+      // Clear existing songs first
+      setSongs([]);
       const response = await api.get('/top100');
       setSongs(response.data);
       setError(null);
@@ -71,6 +74,8 @@ export default function Top100() {
 
   const handleRefresh = () => {
     setIsRefreshing(true);
+    // Clear songs before refreshing
+    setSongs([]);
     fetchSongs();
   };
 
