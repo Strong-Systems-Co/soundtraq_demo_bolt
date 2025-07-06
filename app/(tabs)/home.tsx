@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Image, ScrollView, TouchableOpacity, Dimensions, StyleSheet } from 'react-native';
 import { PhoneIncoming as HomeIcon, FileText, Settings, Music, LogOut, Library } from 'lucide-react-native';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '@/constants/api';
 import { saveData, loadData, STORAGE_KEYS } from '@/utils/storage';
 import { useUser } from '@/context/user';
