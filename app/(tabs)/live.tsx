@@ -228,6 +228,7 @@ export default function Live() {
     fetchStations();
   }, []);
 
+  useEffect(() => {
     if (selectedStation?.id) {
       // Clear songs when station changes
       setSongs([]);
