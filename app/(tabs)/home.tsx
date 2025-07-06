@@ -73,12 +73,8 @@ export default function Home() {
   const updateInterval = useRef<NodeJS.Timeout>();
 
   const loadCachedData = useCallback(async () => {
-    const cached = await loadData<PlayingToday[]>(STORAGE_KEYS.PLAYING_TODAY);
-    if (cached) {
-      setPlayingToday(cached.data);
-      setLastUpdate(new Date(cached.timestamp));
-      return true;
-    }
+    // Clear cached data on every reload
+    await AsyncStorage.removeItem(STORAGE_KEYS.PLAYING_TODAY);
     return false;
   }, []);
 
@@ -113,13 +109,10 @@ export default function Home() {
 
   useEffect(() => {
     const initializeData = async () => {
-      const hasCachedData = await loadCachedData();
-      if (!hasCachedData) {
-        fetchPlayingToday();
-      } else {
-        setLoading(false);
-        fetchPlayingToday();
-      }
+      // Clear any cached data first
+      await loadCachedData();
+      // Always fetch fresh data
+      fetchPlayingToday();
     };
 
     initializeData();
